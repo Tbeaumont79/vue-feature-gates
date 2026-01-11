@@ -3,6 +3,9 @@
 	"version": "1.0.0",
 	"description": "Lightweight, type-safe feature flags for Vue 3.",
 	"main": "index.js",
+	"peerDependencies": {
+		"vue": "^3.4.0"
+	},
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "node index.ts",
