@@ -1,25 +1,38 @@
 {
 	"name": "vue-feature-gates",
-	"version": "1.0.0",
+	"version": "0.1.0",
 	"description": "Lightweight, type-safe feature flags for Vue 3.",
-	"main": "index.js",
-	"peerDependencies": {
-		"vue": "^3.4.0"
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		}
 	},
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"dev": "node index.ts",
+		"build": "tsc",
+		"prepublishOnly": "npm run build",
 		"lint": "oxlint",
 		"lint:fix": "oxlint --fix"
 	},
-	"keywords": [],
-	"author": "Thibault Beaumont",
-	"license": "MIT",
-	"packageManager": "pnpm@10.28.0",
+	"peerDependencies": {
+		"vue": "^3.4.0"
+	},
 	"devDependencies": {
 		"vue": "^3.4.0",
 		"oxlint": "^1.38.0",
 		"typescript": "^5.9.3",
 		"vue-tsc": "^3.2.2"
-	}
+	},
+	"keywords": [
+		"vue",
+		"feature-flags",
+		"feature-gates"
+	],
+	"author": "Thibault Beaumont",
+	"license": "MIT"
 }
