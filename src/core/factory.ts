@@ -1,8 +1,8 @@
-import { FeatureFlagManager } from "./featureFlagManager";
+import { createFeatureFlagController } from "./createFeatureFlagController";
 import type { FeatureFlagsShape } from "./types";
 
 export function createFeatureFlagManager<T extends FeatureFlagsShape>(
-	flags: T
+	flags: T,
 ) {
-	return new FeatureFlagManager<T>(flags);
+	return createFeatureFlagController<T>(flags);
 }

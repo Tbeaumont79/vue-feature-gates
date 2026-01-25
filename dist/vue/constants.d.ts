@@ -1,6 +1,3 @@
 import type { InjectionKey } from "vue";
 import type { FeatureFlagController, FeatureFlagsShape } from "../core/types";
-
-export const FEATURE_FLAGS_KEY: InjectionKey<
-	FeatureFlagController<FeatureFlagsShape>
-> = Symbol("feature-flags");
+export declare const FEATURE_FLAGS_KEY: InjectionKey<FeatureFlagController<FeatureFlagsShape>>;

@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import { createFeatureFlags } from "vue-feature-flags";
-const app = createApp(App)
+const app = createApp(App);
 
 app.use(
 	createFeatureFlags({
