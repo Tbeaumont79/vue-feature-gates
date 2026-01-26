@@ -34,5 +34,13 @@
 		"feature-gates"
 	],
 	"author": "Thibault Beaumont",
-	"license": "MIT"
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Tbeaumont79/vue-feature-gates.git"
+	},
+	"bugs": {
+		"url": "https://github.com/Tbeaumont79/vue-feature-gates/issues"
+	},
+	"homepage": "https://github.com/Tbeaumont79/vue-feature-gates#readme"
 }
