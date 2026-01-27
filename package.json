@@ -20,12 +20,20 @@
 		"lint:fix": "oxlint --fix"
 	},
 	"peerDependencies": {
+		"pinia": "^2.0.0",
 		"vue": "^3.4.0"
 	},
+	"peerDependenciesMeta": {
+		"pinia": {
+			"optional": true
+		}
+	},
 	"devDependencies": {
-		"vue": "^3.4.0",
+		"@types/node": "^25.0.10",
 		"oxlint": "^1.38.0",
+		"pinia": "^3.0.4",
 		"typescript": "^5.9.3",
+		"vue": "^3.4.0",
 		"vue-tsc": "^3.2.2"
 	},
 	"keywords": [

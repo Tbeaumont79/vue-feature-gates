@@ -1,4 +1,4 @@
-import type { FeatureFlagsShape, FeatureFlagController } from "./types";
+import type { FeatureFlagsShape, FeatureFlagController } from "../types";
 
 export function createFeatureFlagController<T extends FeatureFlagsShape>(
 	initialFlags: T,

@@ -1,158 +1,416 @@
-# vue-feature-gates
+# 🚀 vue-feature-gates
 
-Lightweight, type-safe feature flags for Vue 3.
+Lightweight, type-safe feature flags for Vue 3 with **optional Pinia persistence**.
 
-**vue-feature-gates** allows you to control feature visibility at runtime in your Vue 3 applications. Instead of using environment variables or config files that require rebuilds, you can toggle features dynamically—perfect for progressive rollouts, A/B testing, beta programs, or environment-based configurations.
+[![npm version](https://img.shields.io/npm/v/vue-feature-gates.svg)](https://www.npmjs.com/package/vue-feature-gates)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-A simple and fully typed Vue 3 plugin to manage runtime feature flags, with a strong focus on TypeScript DX and clean architecture.
+## ✨ Features
 
-# Features
+- 🎯 **Type-safe** - Full TypeScript support with generics
+- ⚡ **Lightweight** - Zero dependencies (Pinia optional)
+- 🔄 **Reactive** - Built on Vue 3's reactivity system
+- 💾 **Persistence** - Optional localStorage/sessionStorage via Pinia
+- 🌐 **Cross-tab sync** - Real-time synchronization across browser tabs
+- 🔌 **Simple API** - Easy to use composable and plugin
+- 🛡️ **Production ready** - No `any` types, fully tested
 
-- Type-safe feature flags
-- Lightweight
-- Simple API and easy to use
-
-# Installation
+## 📦 Installation
 
 ```bash
 npm install vue-feature-gates
-# or
-pnpm install vue-feature-gates
 ```
 
-# Usage
+### With Persistence (Optional)
 
-## Install the plugin
+If you want to persist feature flags to localStorage:
 
-```ts
+```bash
+npm install vue-feature-gates pinia
+```
+
+## 🚀 Quick Start
+
+### Basic Usage (No Persistence)
+
+```typescript
 // main.ts
 import { createApp } from "vue";
-import App from "./App.vue";
 import { createFeatureFlags } from "vue-feature-gates";
+import App from "./App.vue";
 
 const app = createApp(App);
+
 app.use(
 	createFeatureFlags({
-		feature1: true,
-		feature2: false,
+		newDashboard: false,
+		betaMode: false,
+		darkTheme: true,
 	}),
 );
+
 app.mount("#app");
 ```
 
-## Use the plugin in a component
+### With Pinia Persistence
+
+```typescript
+// main.ts
+import { createApp } from "vue";
+import { createPinia } from "pinia";
+import { createFeatureFlags } from "vue-feature-gates";
+import App from "./App.vue";
+
+const app = createApp(App);
+const pinia = createPinia();
+
+// Install Pinia first
+app.use(pinia);
+
+// Install feature flags with persistence
+app.use(
+	createFeatureFlags(
+		{
+			newDashboard: false,
+			betaMode: false,
+			darkTheme: true,
+		},
+		{
+			pinia,
+			storage: {
+				enabled: true,
+				storageKey: "my-app-feature-flags",
+				storage: localStorage, // or sessionStorage
+			},
+		},
+	),
+);
+
+app.mount("#app");
+```
+
+## 📖 Usage in Components
+
+### Using the Composable
 
 ```vue
 <template>
-	<div v-if="isEnabled('feature1')">Feature 1 is enabled</div>
+	<div>
+		<!-- Conditionally render components based on flags -->
+		<DashboardV2 v-if="flags.newDashboard" />
+		<DashboardV1 v-else />
+
+		<!-- Show beta features -->
+		<BetaBanner v-if="flags.betaMode" />
+
+		<!-- Toggle flags -->
+		<button @click="toggleDashboard">
+			{{ flags.newDashboard ? "Use Old Dashboard" : "Try New Dashboard" }}
+		</button>
+	</div>
 </template>
 
 <script setup lang="ts">
-import { useFeatureFlags } from "vue-feature-gates";
+import { useFeatureFlags } from "vue-feature-flags";
 
-// You can now destructure methods directly!
-const { isEnabled, set } = useFeatureFlags();
+const { flags, enable, disable, set } = useFeatureFlags<{
+	newDashboard: boolean;
+	betaMode: boolean;
+	darkTheme: boolean;
+}>();
+
+const toggleDashboard = () => {
+	set("newDashboard", !flags.newDashboard);
+};
+
+// Or use convenience methods
+const enableBeta = () => enable("betaMode");
+const disableBeta = () => disable("betaMode");
 </script>
 ```
 
-# API
+### Feature Flag Control Panel Example
 
-### `createFeatureFlags(flags)`
+```vue
+<template>
+	<div class="feature-flags-panel">
+		<h3>⚙️ Feature Flags Control</h3>
+		<div v-for="(value, key) in flags" :key="key" class="flag-control">
+			<label>
+				{{ key }}
+				<input type="checkbox" :checked="value" @change="set(key, !value)" />
+			</label>
+		</div>
+	</div>
+</template>
 
-Creates a type-safe feature flags instance to be installed in the Vue app.
+<script setup lang="ts">
+import { useFeatureFlags } from "vue-feature-flags";
 
-```ts
-createFeatureFlags<T extends Record<string, boolean>>(flags: T);
+const { flags, set } = useFeatureFlags();
+</script>
 ```
 
-### `useFeatureFlags()`
+## 🎯 API Reference
 
-Returns the feature flag controller. Supports generic typing and safe destructuring.
+### `createFeatureFlags(flags, options?)`
 
-```ts
-const { isEnabled, set, enable, disable, flags } = useFeatureFlags();
+Creates the Vue plugin for feature flags.
+
+**Parameters:**
+
+- `flags`: `Record<string, boolean>` - Initial feature flag values
+- `options?`: `FeatureFlagOptions` - Optional configuration
+
+**Options:**
+
+```typescript
+interface FeatureFlagOptions {
+	// Optional Pinia instance for persistence
+	pinia?: Pinia;
+
+	// Storage configuration
+	storage?: {
+		enabled?: boolean; // Enable persistence (default: false)
+		storageKey?: string; // localStorage key (default: 'vue-feature-flags')
+		storage?: Storage; // Storage API (default: window.localStorage)
+	};
+}
 ```
 
-#### Methods
+**Example:**
 
-- `isEnabled(key: string): boolean` - Check if a flag is enabled
-- `set(key: string, value: boolean): void` - Set a flag value manually
-- `enable(key: string): void` - Enable a flag
-- `disable(key: string): void` - Disable a flag
+```typescript
+app.use(
+	createFeatureFlags(
+		{ newDashboard: false },
+		{
+			pinia,
+			storage: {
+				enabled: true,
+				storageKey: "my-app-flags",
+			},
+		},
+	),
+);
+```
 
-# Type safety
+### `useFeatureFlags<T>()`
 
-Type inference is based on the object passed to `createFeatureFlags`.
+Composable to access and control feature flags.
 
-```ts
-const flags = createFeatureFlags({
-	feature1: true,
-	feature2: false,
+**Returns:**
+
+```typescript
+{
+  flags: T;                                    // Reactive flags object
+  isEnabled: (key: keyof T) => boolean;       // Check if flag is enabled
+  set: (key: keyof T, value: boolean) => void; // Set flag value
+  enable: (key: keyof T) => void;             // Enable a flag
+  disable: (key: keyof T) => void;            // Disable a flag
+}
+```
+
+**Example:**
+
+```typescript
+const { flags, enable, disable, set, isEnabled } = useFeatureFlags<{
+	newDashboard: boolean;
+	betaMode: boolean;
+}>();
+
+// Check flag
+if (isEnabled("newDashboard")) {
+	console.log("New dashboard is enabled!");
+}
+
+// Enable/disable
+enable("betaMode");
+disable("betaMode");
+
+// Set directly
+set("newDashboard", true);
+
+// Access reactive flags
+console.log(flags.newDashboard); // true
+```
+
+## 💾 Persistence
+
+When you provide a Pinia instance and enable storage, feature flags automatically:
+
+- ✅ **Save to localStorage** on every change
+- ✅ **Load from localStorage** on app initialization
+- ✅ **Sync across tabs** in real-time via storage events
+
+**Example with sessionStorage:**
+
+```typescript
+app.use(
+	createFeatureFlags(
+		{ temporaryFeature: false },
+		{
+			pinia,
+			storage: {
+				enabled: true,
+				storage: sessionStorage, // Cleared when tab closes
+			},
+		},
+	),
+);
+```
+
+## 🔄 Real-World Example
+
+Here's a complete example showing A/B testing for a new dashboard:
+
+```typescript
+// main.ts
+import { createApp } from "vue";
+import { createPinia } from "pinia";
+import { createFeatureFlags } from "vue-feature-gates";
+import App from "./App.vue";
+
+const app = createApp(App);
+const pinia = createPinia();
+
+app.use(pinia);
+app.use(
+	createFeatureFlags(
+		{
+			newDashboard: false,
+			advancedCharts: false,
+			exportPDF: true,
+		},
+		{
+			pinia,
+			storage: {
+				enabled: true,
+				storageKey: "analytics-app-flags",
+			},
+		},
+	),
+);
+
+app.mount("#app");
+```
+
+```vue
+<!-- Dashboard.vue -->
+<template>
+	<div>
+		<!-- A/B test: New vs Old Dashboard -->
+		<DashboardV2 v-if="flags.newDashboard" />
+		<DashboardV1 v-else />
+
+		<!-- Conditional features -->
+		<AdvancedCharts v-if="flags.advancedCharts" />
+		<ExportButton v-if="flags.exportPDF" format="pdf" />
+	</div>
+</template>
+
+<script setup lang="ts">
+import { useFeatureFlags } from "vue-feature-flags";
+import DashboardV1 from "./DashboardV1.vue";
+import DashboardV2 from "./DashboardV2.vue";
+import AdvancedCharts from "./AdvancedCharts.vue";
+import ExportButton from "./ExportButton.vue";
+
+const { flags } = useFeatureFlags<{
+	newDashboard: boolean;
+	advancedCharts: boolean;
+	exportPDF: boolean;
+}>();
+</script>
+```
+
+## 🧪 Testing
+
+Feature flags make testing different scenarios easy:
+
+```typescript
+import { mount } from "@vue/test-utils";
+import { createFeatureFlags } from "vue-feature-gates";
+import Dashboard from "./Dashboard.vue";
+
+test("shows new dashboard when flag is enabled", () => {
+	const wrapper = mount(Dashboard, {
+		global: {
+			plugins: [
+				createFeatureFlags({
+					newDashboard: true,
+				}),
+			],
+		},
+	});
+
+	expect(wrapper.findComponent(DashboardV2).exists()).toBe(true);
 });
-
-// flags.flags is typed!
 ```
 
-`isEnabled` method will only accept `feature1` and `feature2` as arguments.
+## 🎨 Playground
 
-```ts
-const { isEnabled } = useFeatureFlags();
-
-isEnabled("feature1"); // boolean
-isEnabled("feature2"); // boolean
-isEnabled("feature3"); // TS Error
-```
-
-# Architecture
-
-- **Framework-agnostic TypeScript core**
-- **Vue plugin as an adapter layer**
-- **Composable API for runtime access**
-
-This separation ensures:
-
-- Better testability
-- Easier evolution (remote flags, CLI, SSR, etc.)
-- Clean and maintainable architecture
-
-# What's New in v0.1.1
-
-- **Factory Implementation**: Replaced `FeatureFlagManager` class with `createFeatureFlagController` factory function for better tree-shaking and functional style.
-- **Destructuring Support**: You can now safely destructure `isEnabled`, `set`, etc. from `useFeatureFlags()` without losing the `this` context.
-- **Improved Typing**: Enhanced internal type safety using Vue's `InjectionKey`.
-
-# Development
+Try the live playground:
 
 ```bash
- pnpm install
- pnpm run dev
+cd playground
+npm install
+npm run dev
 ```
 
-A local vue playground is included to test the plugin in real conditions.
+The playground demonstrates:
 
-# Roadmap
+- Real-time flag toggling
+- Conditional component rendering
+- Persistence across page reloads
+- Cross-tab synchronization
 
-- [ ] v-feature directive
-- [ ] Async / remote feature flags
-- [ ] SSR support
-- [ ] Feature flags CLI
-- [ ] Persistence (localStorage, cookies)
+## 📝 TypeScript Support
 
-# Contributing
+Full TypeScript support with type inference:
 
-Contributions, issues, and feature requests are welcome !
+```typescript
+// Define your flags shape
+interface AppFeatureFlags {
+	newDashboard: boolean;
+	betaMode: boolean;
+	darkTheme: boolean;
+}
 
-# Why this project ?
+// Type-safe everywhere
+const { flags, set } = useFeatureFlags<AppFeatureFlags>();
 
-This project focus on :
+set("newDashboard", true); // ✅ OK
+set("invalidFlag", true); // ❌ Type error
+set("darkTheme", "yes"); // ❌ Type error (must be boolean)
+```
 
-- Clean API design
-- Strong typeScript guarantees
-- Separation of concerns
-- Developer experience (DX)
+## 🏗️ Architecture
 
-It is intentionally small in scope to remain easy to understand and extend.
+```
+src/
+├── types/          # TypeScript type definitions
+├── stores/         # Pinia store factory
+├── plugins/        # Plugin & persistence logic
+├── composables/    # useFeatureFlags composable
+├── utils/          # Constants & utilities
+└── core/           # Core controller (framework-agnostic)
+```
 
-# License
+## 🤝 Contributing
 
-MIT
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+MIT © [Thibault Beaumont](https://github.com/Tbeaumont79)
+
+## 🔗 Links
+
+- [GitHub Repository](https://github.com/Tbeaumont79/vue-feature-gates)
+- [NPM Package](https://www.npmjs.com/package/vue-feature-gates)
+- [Issue Tracker](https://github.com/Tbeaumont79/vue-feature-gates/issues)
+
+---
+
+**Made with ❤️ for the Vue.js community**
