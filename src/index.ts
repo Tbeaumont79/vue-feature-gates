@@ -1,4 +1,9 @@
-export { createFeatureFlags } from "./vue/plugin";
-export { useFeatureFlags } from "./vue/useFeatureFlags";
+export { createFeatureFlags } from "./plugins/plugin";
+export { useFeatureFlags } from "./composables/useFeatureFlags";
 
-export type { FeatureFlagsShape, FeatureFlagController } from "./core/types";
+export type {
+	FeatureFlagsShape,
+	FeatureFlagController,
+	StorageConfig,
+	FeatureFlagOptions,
+} from "./types";
