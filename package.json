@@ -39,7 +39,15 @@
 	"keywords": [
 		"vue",
 		"feature-flags",
-		"feature-gates"
+		"feature-gates",
+		"A/B-testing",
+		"feature-gate",
+		"feature-toggle",
+		"vue-feature-flags",
+		"vue-feature-gates",
+		"vue-ab-testing",
+		"vue-feature-toggle",
+		"vue-feature-gate"
 	],
 	"author": "Thibault Beaumont",
 	"license": "MIT",
