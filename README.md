@@ -5,17 +5,17 @@ Lightweight, type-safe feature flags for Vue 3 with **optional Pinia persistence
 [![npm version](https://img.shields.io/npm/v/vue-feature-gates.svg)](https://www.npmjs.com/package/vue-feature-gates)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-## ✨ Features
+## Features
 
-- 🎯 **Type-safe** - Full TypeScript support with generics
-- ⚡ **Lightweight** - Zero dependencies (Pinia optional)
-- 🔄 **Reactive** - Built on Vue 3's reactivity system
-- 💾 **Persistence** - Optional localStorage/sessionStorage via Pinia
-- 🌐 **Cross-tab sync** - Real-time synchronization across browser tabs
-- 🔌 **Simple API** - Easy to use composable and plugin
-- 🛡️ **Production ready** - No `any` types, fully tested
+- **Type-safe** - Full TypeScript support with generics
+- **Lightweight** - Zero dependencies (Pinia optional)
+- **Reactive** - Built on Vue 3's reactivity system
+- **Persistence** - Optional localStorage/sessionStorage via Pinia
+- **Cross-tab sync** - Real-time synchronization across browser tabs
+- **Simple API** - Easy to use composable and plugin
+- **Production ready** - No `any` types, fully tested
 
-## 📦 Installation
+## Installation
 
 ```bash
 npm install vue-feature-gates
@@ -29,7 +29,7 @@ If you want to persist feature flags to localStorage:
 npm install vue-feature-gates pinia
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Basic Usage (No Persistence)
 
@@ -89,7 +89,7 @@ app.use(
 app.mount("#app");
 ```
 
-## 📖 Usage in Components
+## Usage in Components
 
 ### Using the Composable
 
@@ -151,7 +151,7 @@ const { flags, set } = useFeatureFlags();
 </script>
 ```
 
-## 🎯 API Reference
+## API Reference
 
 ### `createFeatureFlags(flags, options?)`
 
@@ -235,7 +235,7 @@ set("newDashboard", true);
 console.log(flags.newDashboard); // true
 ```
 
-## 💾 Persistence
+## Persistence
 
 When you provide a Pinia instance and enable storage, feature flags automatically:
 
@@ -260,7 +260,7 @@ app.use(
 );
 ```
 
-## 🔄 Real-World Example
+## Real-World Example
 
 Here's a complete example showing A/B testing for a new dashboard:
 
@@ -365,7 +365,7 @@ The playground demonstrates:
 - Persistence across page reloads
 - Cross-tab synchronization
 
-## 📝 TypeScript Support
+## TypeScript Support
 
 Full TypeScript support with type inference:
 
@@ -385,7 +385,7 @@ set("invalidFlag", true); // ❌ Type error
 set("darkTheme", "yes"); // ❌ Type error (must be boolean)
 ```
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 src/
@@ -397,15 +397,15 @@ src/
 └── core/           # Core controller (framework-agnostic)
 ```
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 📄 License
+## License
 
 MIT © [Thibault Beaumont](https://github.com/Tbeaumont79)
 
-## 🔗 Links
+## Links
 
 - [GitHub Repository](https://github.com/Tbeaumont79/vue-feature-gates)
 - [NPM Package](https://www.npmjs.com/package/vue-feature-gates)
