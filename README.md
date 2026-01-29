@@ -239,9 +239,9 @@ console.log(flags.newDashboard); // true
 
 When you provide a Pinia instance and enable storage, feature flags automatically:
 
-- ✅ **Save to localStorage** on every change
-- ✅ **Load from localStorage** on app initialization
-- ✅ **Sync across tabs** in real-time via storage events
+- **Save to localStorage** on every change
+- **Load from localStorage** on app initialization
+- **Sync across tabs** in real-time via storage events
 
 **Example with sessionStorage:**
 
@@ -324,31 +324,7 @@ const { flags } = useFeatureFlags<{
 </script>
 ```
 
-## 🧪 Testing
-
-Feature flags make testing different scenarios easy:
-
-```typescript
-import { mount } from "@vue/test-utils";
-import { createFeatureFlags } from "vue-feature-gates";
-import Dashboard from "./Dashboard.vue";
-
-test("shows new dashboard when flag is enabled", () => {
-	const wrapper = mount(Dashboard, {
-		global: {
-			plugins: [
-				createFeatureFlags({
-					newDashboard: true,
-				}),
-			],
-		},
-	});
-
-	expect(wrapper.findComponent(DashboardV2).exists()).toBe(true);
-});
-```
-
-## 🎨 Playground
+## Playground
 
 Try the live playground:
 
