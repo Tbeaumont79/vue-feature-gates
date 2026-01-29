@@ -134,7 +134,7 @@ const disableBeta = () => disable("betaMode");
 ```vue
 <template>
 	<div class="feature-flags-panel">
-		<h3>⚙️ Feature Flags Control</h3>
+		<h3>Feature Flags Control</h3>
 		<div v-for="(value, key) in flags" :key="key" class="flag-control">
 			<label>
 				{{ key }}
@@ -356,9 +356,9 @@ interface AppFeatureFlags {
 // Type-safe everywhere
 const { flags, set } = useFeatureFlags<AppFeatureFlags>();
 
-set("newDashboard", true); // ✅ OK
-set("invalidFlag", true); // ❌ Type error
-set("darkTheme", "yes"); // ❌ Type error (must be boolean)
+set("newDashboard", true); // OK
+set("invalidFlag", true); // Type error
+set("darkTheme", "yes"); // Type error (must be boolean)
 ```
 
 ## Architecture
