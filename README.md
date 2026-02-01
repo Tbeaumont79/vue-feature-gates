@@ -365,9 +365,7 @@ There are several feature flag libraries for Vue, but `vue-feature-gates` is bui
 
 See it in action! The playground demonstrates all key features:
 
-<video src="./demo/vue-features-gates.webm" autoplay loop muted playsinline>
-  Votre navigateur ne supporte pas la vidéo HTML5.
-</video>
+![Playground Demo - Feature Flags in Action](./demo/playground-demo.gif)
 
 _Live demo showing reactive component toggling with feature flags_
 
