@@ -1,8 +1,12 @@
 # 🚀 vue-feature-gates
 
-Lightweight, type-safe feature flags for Vue 3 with **optional Pinia persistence**.
+**Modern feature flags for Vue 3**: plugin + composable, type-safe, Pinia persistence, cross-tab sync, zero dependencies.
+
+Perfect for serious Vue 3 applications that need production-ready A/B testing and feature rollout management.
 
 [![npm version](https://img.shields.io/npm/v/vue-feature-gates.svg)](https://www.npmjs.com/package/vue-feature-gates)
+[![Vue 3](https://img.shields.io/badge/Vue-3.x-42b883.svg)](https://vuejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178c6.svg)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Features
@@ -28,6 +32,18 @@ If you want to persist feature flags to localStorage:
 ```bash
 npm install vue-feature-gates pinia
 ```
+
+## Get Started in 10 Seconds
+
+```typescript
+// main.ts
+app.use(createFeatureFlags({ newDashboard: false }));
+
+// AnyComponent.vue
+const { flags } = useFeatureFlags<{ newDashboard: boolean }>();
+```
+
+That's it! Now use `flags.newDashboard` in your templates. See below for full examples with persistence and cross-tab sync.
 
 ## Quick Start
 
@@ -324,9 +340,38 @@ const { flags } = useFeatureFlags<{
 </script>
 ```
 
+## Why vue-feature-gates?
+
+There are several feature flag libraries for Vue, but `vue-feature-gates` is built specifically for **modern Vue 3 applications**:
+
+| Feature               | vue-feature-gates                     | Traditional Solutions                |
+| --------------------- | ------------------------------------- | ------------------------------------ |
+| **Vue 3 Optimized**   | ✅ Built on Composition API           | ❌ Often Vue 2 or compatibility mode |
+| **Type Safety**       | ✅ Full TypeScript with generics      | ⚠️ Limited or no type inference      |
+| **Pinia Integration** | ✅ Native Pinia store support         | ❌ Custom state management           |
+| **Cross-tab Sync**    | ✅ Real-time sync via storage events  | ❌ Manual implementation needed      |
+| **Zero Dependencies** | ✅ Core has no dependencies           | ⚠️ Often brings heavy deps           |
+| **Production Ready**  | ✅ No `any` types, fully tested       | ⚠️ Varies                            |
+| **DX-First API**      | ✅ Composable + plugin, minimal setup | ⚠️ Often verbose configuration       |
+
+**Perfect for:**
+
+- Vue 3 apps using Pinia for state management
+- Teams needing type-safe feature toggles
+- Applications requiring cross-tab synchronization
+- Projects that value zero-dependency core libraries
+
 ## Playground
 
-Try the live playground:
+See it in action! The playground demonstrates all key features:
+
+<video src="./demo/vue-features-gates.mov" autoplay loop muted playsinline>
+  Votre navigateur ne supporte pas la vidéo HTML5.
+</video>
+
+_Live demo showing reactive component toggling with feature flags_
+
+**Try it yourself:**
 
 ```bash
 cd playground
@@ -336,10 +381,10 @@ npm run dev
 
 The playground demonstrates:
 
-- Real-time flag toggling
-- Conditional component rendering
-- Persistence across page reloads
-- Cross-tab synchronization
+- Real-time flag toggling with a control panel
+- Conditional component rendering (v-if based on flags)
+- Persistence across page reloads (localStorage)
+- Cross-tab synchronization (open 2+ tabs and toggle flags)
 
 ## TypeScript Support
 
